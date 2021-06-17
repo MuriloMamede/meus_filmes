@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const Color accentColor = Colors.redAccent;
 
 const Color primaryColor = Colors.red;
-Color brancoFundo = Colors.grey[100];
+Color brancoFundo = Colors.black87;
 LinearGradient get primaryGradient => LinearGradient(
       begin: Alignment.topRight,
       end: Alignment.bottomLeft,

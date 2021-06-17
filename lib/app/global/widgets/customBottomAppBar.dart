@@ -19,10 +19,9 @@ class CustomBottomAppBar extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                Get.reset();
-                /*Get.offNamed(
+                Get.offNamed(
                   Routes.SEARCH,
-                );*/
+                );
               }),
           IconButton(
               icon: Icon(
@@ -30,7 +29,6 @@ class CustomBottomAppBar extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                Get.reset();
                 Get.offNamed(
                   Routes.HOME,
                 );
@@ -41,10 +39,9 @@ class CustomBottomAppBar extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                Get.reset();
-                /*Get.offNamed(
+                Get.offNamed(
                   Routes.OPTIONS,
-                );*/
+                );
               }),
         ]),
       ),

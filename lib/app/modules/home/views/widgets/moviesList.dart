@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meus_filmes/app/theme/colors.dart';
 
 class MoviesListWidget extends StatelessWidget {
   @required
@@ -29,7 +30,9 @@ class MoviesListWidget extends StatelessWidget {
                   child: Container(
                     height: Get.height * 0.04,
                     width: Get.width * 0.3,
-                    color: Colors.red,
+                    decoration: BoxDecoration(
+                      gradient: redGradient,
+                    ),
                     child: Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -45,12 +48,7 @@ class MoviesListWidget extends StatelessWidget {
                     onTap: onTap,
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Get.theme.primaryColor,
-                            Colors.red.shade200,
-                          ],
-                        ),
+                        gradient: redGradient,
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         boxShadow: [
                           BoxShadow(

@@ -1,7 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:meus_filmes/app/theme/colors.dart';
+
 const kApiKey = 'd7ce90bea6eb17de7e4fe1e792261e84';
 const kBaseUrl = 'https://api.themoviedb.org/3';
 const imageUrl = 'https://image.tmdb.org/t/p/original/';
 const imgNotFound = 'https://i.imgur.com/cb5sTfZ.png';
+
+showSnackBar(String title, String message) => Get.snackbar(
+      title,
+      message,
+      backgroundGradient: redGradient,
+      // backgroundColor: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(15),
+    );
 
 const String MYMOVIES_TABLE = 'myMovies';
 const String MYMOVIES_ID = 'id';

@@ -12,8 +12,7 @@ class MovieProvider extends GetConnect {
         "/search/movie?api_key=$token&language=pt-BR&query=$query&page=1&include_adult=false");
 
     if (response.hasError) {
-      Get.defaultDialog(
-          title: "Error Catch", content: Text("${response.statusText}"));
+      showSnackBar("Error Catch", response.statusText);
     }
 
     if (response.statusCode == 200) {
@@ -29,8 +28,7 @@ class MovieProvider extends GetConnect {
 
       return list;
     } else {
-      Get.defaultDialog(
-          title: "Error", content: Text("${response.body['error']}"));
+      showSnackBar("Error", response.body['error']);
       return null;
     }
   }
@@ -43,8 +41,7 @@ class MovieProvider extends GetConnect {
         "/discover/movie?api_key=$kApiKey&language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=$genresId");
 
     if (response.hasError) {
-      Get.defaultDialog(
-          title: "Error Catch", content: Text("${response.statusText}"));
+      showSnackBar("Error Catch", response.statusText);
     }
 
     if (response.statusCode == 200) {
@@ -60,8 +57,7 @@ class MovieProvider extends GetConnect {
 
       return list;
     } else {
-      Get.defaultDialog(
-          title: "Error", content: Text("${response.body['error']}"));
+      showSnackBar("Error", response.body['error']);
       return null;
     }
   }
@@ -71,8 +67,7 @@ class MovieProvider extends GetConnect {
         kBaseUrl + "/movie/popular?page=1&api_key=$token&language=pt-BR");
 
     if (response.hasError) {
-      Get.defaultDialog(
-          title: "Error Catch", content: Text("${response.statusText}"));
+      showSnackBar("Error Catch", response.statusText);
     }
 
     if (response.statusCode == 200) {
@@ -88,8 +83,7 @@ class MovieProvider extends GetConnect {
 
       return list;
     } else {
-      Get.defaultDialog(
-          title: "Error", content: Text("${response.body['error']}"));
+      showSnackBar("Error", response.body['error']);
       return null;
     }
   }

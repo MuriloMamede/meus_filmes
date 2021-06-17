@@ -1,12 +1,18 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:meus_filmes/app/theme/colors.dart';
 
 final ThemeData appThemeData = ThemeData(
     primaryColor: Colors.red,
     buttonColor: Colors.redAccent,
+    snackBarTheme: SnackBarThemeData(
+      contentTextStyle: TextStyle(color: Colors.black87),
+      actionTextColor: Colors.black87,
+    ),
     scaffoldBackgroundColor: brancoFundo,
     iconTheme: IconThemeData(color: Colors.white),
-    textTheme: TextTheme(bodyText2: TextStyle(color: Colors.black87)),
+    textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white70)),
     brightness: Brightness.light,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.redAccent, foregroundColor: Colors.white),
