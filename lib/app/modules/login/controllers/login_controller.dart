@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:meus_filmes/app/data/model/profile_model.dart';
+
 import 'package:meus_filmes/app/data/model/user_model.dart';
-import 'package:meus_filmes/app/data/provider/profile_provider.dart';
+
 import 'package:meus_filmes/app/data/provider/user_provider.dart';
 import 'package:meus_filmes/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   final UserProvider _userProvider = UserProvider();
-  final ProfileProvider _profileProvider = ProfileProvider();
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController password2TextController = TextEditingController();
@@ -39,10 +38,6 @@ class LoginController extends GetxController {
         emailTextController.text, passwordTextController.text);
 
     if (user != null) {
-      Profile profile = await _profileProvider.getFirstUserProfile(user.id);
-      data.write("userId", user.id);
-      data.write("profileId", profile.id);
-      data.write("user", user.toMap());
       Get.offAllNamed(Routes.HOME);
     } else {
       Get.defaultDialog(

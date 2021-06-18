@@ -5,11 +5,13 @@ import 'package:meus_filmes/app/data/model/movie_model.dart';
 import 'package:meus_filmes/app/data/provider/movie_provider.dart';
 import 'package:meus_filmes/app/data/provider/myMovies_provider.dart';
 import 'package:meus_filmes/app/global/constants.dart';
+import 'package:meus_filmes/app/modules/home/controllers/home_controller.dart';
 
 class SearchController extends GetxController {
   final MovieProvider _movieProvider = MovieProvider();
   final MyMoviesProvider _myMoviesProvider = MyMoviesProvider();
   final data = GetStorage();
+  HomeController _homeController = Get.find<HomeController>();
 
   int get userId => data.read("userId");
   int get profileId => data.read("profileId");
@@ -32,6 +34,8 @@ class SearchController extends GetxController {
       print(result);
       if (result != null) {
         showSnackBar('Sucesso', 'Filme adicionado');
+        _homeController.myMoviesList.add(selectedMovie);
+        _homeController.getMoviesRecommeded();
       } else {
         showSnackBar('Ops...', 'Filme já adicionada na lista');
       }

@@ -21,11 +21,28 @@ class HomePage extends GetView<HomeController> {
     ]);
     void showProfileAdder() {
       Get.defaultDialog(
-        content: TextField(
-          controller: _homeController.nameProfileController,
-          decoration: InputDecoration(labelText: 'Nome:'),
+        backgroundColor: Colors.black87,
+        content: Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(left: 8),
+          decoration: BoxDecoration(
+              color: Colors.white60,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: TextField(
+            controller: _homeController.nameProfileController,
+            autofocus: true,
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Nome',
+            ),
+            style: TextStyle(color: Colors.black87, fontSize: 18),
+          ),
         ),
         title: 'Novo Perfil',
+        titleStyle: TextStyle(
+          color: Colors.white,
+        ),
         actions: [
           InkWell(
             onTap: () {
@@ -61,7 +78,7 @@ class HomePage extends GetView<HomeController> {
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
-            //backgroundColor: Colors.black,
+            backgroundColor: Colors.black87,
             title: Text(
               "Selecione um Perfil",
               textAlign: TextAlign.center,
@@ -92,6 +109,7 @@ class HomePage extends GetView<HomeController> {
                                       _homeController.profilesList[index].id);
                                 },
                                 child: Container(
+                                  margin: EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     gradient: redGradient,
                                   ),
@@ -140,7 +158,7 @@ class HomePage extends GetView<HomeController> {
 
     return Scaffold(
       // backgroundColor: Colors.black,
-      bottomNavigationBar: CustomBottomAppBar(),
+      bottomNavigationBar: CustomBottomAppBar("home"),
       appBar: CustomBar(""),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -163,7 +181,7 @@ class HomePage extends GetView<HomeController> {
                               children: [
                                 Icon(
                                   Icons.person,
-                                  color: Colors.red[700],
+                                  color: Colors.white,
                                 ),
                                 Text(
                                   'Trocar Perfil',

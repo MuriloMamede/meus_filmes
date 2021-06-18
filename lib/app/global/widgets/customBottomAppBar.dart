@@ -4,6 +4,8 @@ import 'package:meus_filmes/app/routes/app_pages.dart';
 import 'package:meus_filmes/app/theme/colors.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
+  final String pageSelected;
+  CustomBottomAppBar(this.pageSelected);
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -16,30 +18,36 @@ class CustomBottomAppBar extends StatelessWidget {
           IconButton(
               icon: Icon(
                 Icons.search,
-                color: Colors.white,
+                color: pageSelected == "search"
+                    ? Colors.white.withOpacity(1)
+                    : Colors.white.withOpacity(0.3),
               ),
               onPressed: () {
-                Get.offNamed(
+                Get.toNamed(
                   Routes.SEARCH,
                 );
               }),
           IconButton(
               icon: Icon(
                 Icons.home,
-                color: Colors.white,
+                color: pageSelected == "home"
+                    ? Colors.white.withOpacity(1)
+                    : Colors.white.withOpacity(0.3),
               ),
               onPressed: () {
-                Get.offNamed(
+                Get.toNamed(
                   Routes.HOME,
                 );
               }),
           IconButton(
               icon: Icon(
                 Icons.menu,
-                color: Colors.white,
+                color: pageSelected == "options"
+                    ? Colors.white.withOpacity(1)
+                    : Colors.white.withOpacity(0.3),
               ),
               onPressed: () {
-                Get.offNamed(
+                Get.toNamed(
                   Routes.OPTIONS,
                 );
               }),

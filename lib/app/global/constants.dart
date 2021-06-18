@@ -10,8 +10,8 @@ const imgNotFound = 'https://i.imgur.com/cb5sTfZ.png';
 showSnackBar(String title, String message) => Get.snackbar(
       title,
       message,
-      backgroundGradient: redGradient,
-      // backgroundColor: Colors.white,
+      backgroundGradient: LinearGradient(colors: [Colors.black, Colors.black]),
+      backgroundColor: Colors.black54,
       snackPosition: SnackPosition.BOTTOM,
       margin: const EdgeInsets.all(15),
     );

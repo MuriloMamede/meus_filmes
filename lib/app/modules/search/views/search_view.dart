@@ -15,7 +15,7 @@ class SearchPage extends GetView<SearchController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomBar(""),
-        bottomNavigationBar: CustomBottomAppBar(),
+        bottomNavigationBar: CustomBottomAppBar("search"),
         body: Center(
           child: Column(
             children: [
