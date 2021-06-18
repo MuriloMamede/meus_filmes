@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meus_filmes/app/global/widgets/CustomTextField.dart';
 import 'package:meus_filmes/app/global/widgets/customAppBar.dart';
 import 'package:meus_filmes/app/global/widgets/customBottomAppBar.dart';
 import 'package:meus_filmes/app/modules/options/controllers/options_controller.dart';
@@ -121,8 +122,74 @@ class OptionsView extends GetView<OptionsController> {
               ),
             ),
             Container(
-              color: Colors.white,
               height: Get.height * 0.37,
+              child: Column(
+                children: [
+                  CustomTextField(
+                    controller: controller.nomeController,
+                    hintText: "Nome",
+                    icon: Icons.person,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Campo obrigatorio";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.01,
+                  ),
+                  CustomTextField(
+                    controller: controller.emailController,
+                    hintText: "Email",
+                    icon: Icons.email,
+                    validator: (value) {
+                      if (!value.isEmpty && !GetUtils.isEmail(value)) {
+                        return "Email Inválido";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.01,
+                  ),
+                  Obx(
+                    () => CustomTextField(
+                      controller: controller.senhaAtualController,
+                      hintText: "Senha Atual",
+                      icon: Icons.vpn_key,
+                      obscureText: !controller.isSenhaVisible.value,
+                      toggle: () {
+                        controller.isSenhaVisible.toggle();
+                      },
+                      validator: (value) {
+                        if (!value.isEmpty && !GetUtils.isEmail(value)) {
+                          return "Senha Inválida";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.01,
+                  ),
+                  Obx(() => CustomTextField(
+                        controller: controller.senhaNovaController,
+                        hintText: "Senha Nova",
+                        icon: Icons.vpn_key,
+                        obscureText: !controller.isSenhanovaVisible.value,
+                        toggle: () {
+                          controller.isSenhanovaVisible.toggle();
+                        },
+                        validator: (value) {
+                          if (!value.isEmpty && !GetUtils.isEmail(value)) {
+                            return "Senha Inválida";
+                          }
+                          return null;
+                        },
+                      )),
+                ],
+              ),
             ),
             Row(
               children: [

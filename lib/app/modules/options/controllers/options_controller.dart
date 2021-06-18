@@ -9,7 +9,6 @@ import 'package:meus_filmes/app/data/provider/user_provider.dart';
 import 'package:meus_filmes/app/modules/home/controllers/home_controller.dart';
 
 class OptionsController extends GetxController {
-  TextEditingController nomeController = TextEditingController();
   final UserProvider _userProvider = UserProvider();
   final data = GetStorage();
   Map get userMap => data.read("user");
@@ -17,11 +16,23 @@ class OptionsController extends GetxController {
   User get user => User.fromMap(userMap);
   final ProfileProvider _profileProvider = ProfileProvider();
   RxList<Profile> get profilesList => _homeController.profilesList;
-  String get birthDate =>
-      DateFormat(DateFormat.YEAR_MONTH_DAY, "pt_Br").format(user.birthDate);
+  TextEditingController profileNomeController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController senhaAtualController = TextEditingController();
+  TextEditingController senhaNovaController = TextEditingController();
+  var isSenhaVisible = false.obs;
+  var isSenhanovaVisible = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
+    setController();
+  }
+
+  setController() {
+    emailController.text = user.email;
+    nomeController.text = user.name;
   }
 
   void logOut() {
@@ -29,7 +40,7 @@ class OptionsController extends GetxController {
   }
 
   editProfile(int index) async {
-    profilesList[index].name = nomeController.text;
+    profilesList[index].name = profileNomeController.text;
     if (await _profileProvider.editProfile(profilesList[index]) == 1) {
       profilesList.refresh();
       Get.back();

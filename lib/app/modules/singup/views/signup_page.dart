@@ -10,32 +10,6 @@ class SignUpPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    void showDatPicker() async {
-      final date = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2150),
-        locale: Localizations.localeOf(context),
-        builder: (BuildContext context, Widget child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              colorScheme: ColorScheme.light(
-                primary: accentColor,
-              ),
-            ),
-            child: child,
-          );
-        },
-      );
-      if (date != null) {
-        _loginController.dateS.value =
-            DateFormat(DateFormat.YEAR_MONTH_DAY, "pt_Br").format(date);
-
-        _loginController.date = date;
-      }
-    }
-
     return Scaffold(
       appBar: CustomBar(""),
       body: Container(
