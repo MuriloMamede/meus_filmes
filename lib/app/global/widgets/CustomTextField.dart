@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width / 1.2,
+      width: Get.width * 0.85,
       height: 45,
       padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
       decoration: BoxDecoration(
@@ -29,6 +29,7 @@ class CustomTextField extends StatelessWidget {
           color: Colors.white,
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         cursorColor: Colors.black,
         controller: controller,
         validator: validator,
