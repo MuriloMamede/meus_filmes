@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meus_filmes/app/global/constants.dart';
@@ -7,13 +8,15 @@ import 'package:meus_filmes/app/global/widgets/CustomTextField.dart';
 import 'package:meus_filmes/app/global/widgets/customAppBar.dart';
 import 'package:meus_filmes/app/global/widgets/customBottomAppBar.dart';
 import 'package:meus_filmes/app/modules/options/controllers/options_controller.dart';
+import 'package:meus_filmes/app/modules/options/views/itemMenu.dart';
 import 'package:meus_filmes/app/theme/colors.dart';
 
 class OptionsView extends GetView<OptionsController> {
   @override
   Widget build(BuildContext context) {
     void showProfileAdder(int index) {
-      controller.nomeController.text = controller.profilesList[index].name;
+      controller.profileNomeController.text =
+          controller.profilesList[index].name;
       Get.defaultDialog(
         backgroundColor: Colors.black87,
         content: Container(
@@ -23,9 +26,12 @@ class OptionsView extends GetView<OptionsController> {
               color: Colors.white60,
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: TextField(
-            controller: controller.nomeController,
+            controller: controller.profileNomeController,
             autofocus: true,
             cursorColor: Colors.white,
+            onEditingComplete: () {
+              controller.editProfile(index);
+            },
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Nome',
@@ -82,7 +88,7 @@ class OptionsView extends GetView<OptionsController> {
                   controller.isSenhaVisible.toggle();
                 },
                 validator: (value) {
-                  if (!value.isEmpty && !GetUtils.isEmail(value)) {
+                  if (value.isEmpty) {
                     return "Senha Inválida";
                   }
                   return null;
@@ -101,7 +107,7 @@ class OptionsView extends GetView<OptionsController> {
                     controller.isSenhanovaVisible.toggle();
                   },
                   validator: (value) {
-                    if (!value.isEmpty && !GetUtils.isEmail(value)) {
+                    if (value.isEmpty && value.length < 6) {
                       return "Senha Inválida";
                     }
                     return null;
@@ -115,9 +121,74 @@ class OptionsView extends GetView<OptionsController> {
         ),
         actions: [
           InkWell(
-            onTap: () {
-              //gsdgfd
-            },
+            onTap: controller.changePassword,
+            child: Container(
+              height: 45,
+              width: Get.width / 1.2,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Get.theme.primaryColor,
+                      Get.theme.primaryColor,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: Center(
+                child: Text(
+                  'Salvar',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    void showUserChanger() {
+      controller.setController();
+      Get.defaultDialog(
+        backgroundColor: Colors.black87,
+        content: Container(
+            child: Column(
+          children: [
+            CustomTextField(
+              controller: controller.nomeController,
+              hintText: "Nome",
+              keyboardType: TextInputType.name,
+              icon: Icons.person,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Nome Inválido";
+                }
+                return null;
+              },
+            ),
+            SizedBox(
+              height: Get.height * 0.01,
+            ),
+            CustomTextField(
+              controller: controller.emailController,
+              hintText: "Email",
+              keyboardType: TextInputType.emailAddress,
+              icon: Icons.email,
+              validator: (value) {
+                if (value.isEmpty && !GetUtils.isEmail(value)) {
+                  return "Email Inválido";
+                }
+                return null;
+              },
+            ),
+          ],
+        )),
+        title: 'Alterar Dados',
+        titleStyle: TextStyle(
+          color: Colors.white,
+        ),
+        actions: [
+          InkWell(
+            onTap: controller.updateUser(),
             child: Container(
               height: 45,
               width: Get.width / 1.2,
@@ -159,11 +230,47 @@ class OptionsView extends GetView<OptionsController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.settings),
-                        onPressed: () {
-                          //pagina edicao de dados
-                        },
+                      CustomPopupMenu(
+                        child: Container(
+                          child: Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          padding: EdgeInsets.all(20),
+                        ),
+                        menuBuilder: () => ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Container(
+                            decoration:
+                                BoxDecoration(gradient: primaryGradient),
+                            child: IntrinsicWidth(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ItemMenu(
+                                    title: 'Trocar Senha',
+                                    icon: Icons.vpn_key,
+                                    onTap: () {
+                                      controller.controllerMenu.hideMenu();
+                                      showSenhaChanger();
+                                    },
+                                  ),
+                                  ItemMenu(
+                                    title: 'Editar Usuário',
+                                    icon: Icons.person,
+                                    onTap: () {
+                                      controller.controllerMenu.hideMenu();
+                                      showUserChanger();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        pressType: PressType.singleClick,
+                        verticalMargin: -10,
+                        controller: controller.controllerMenu,
                       ),
                       IconButton(
                         icon: Icon(Icons.logout),
@@ -174,7 +281,6 @@ class OptionsView extends GetView<OptionsController> {
                     ],
                   ),
                   Align(
-                    //trocar iconce pela foto do usuario
                     alignment: Alignment.center,
                     child: Container(
                       height: Get.height * 0.15,
@@ -188,8 +294,8 @@ class OptionsView extends GetView<OptionsController> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 4),
                           child: Icon(
-                            Icons.edit,
-                            color: Colors.red,
+                            Icons.add_photo_alternate,
+                            color: primaryColor,
                           ),
                         ),
                       ),
@@ -198,76 +304,6 @@ class OptionsView extends GetView<OptionsController> {
                 ],
               ),
             ),
-            /*Container(
-              height: Get.height * 0.25,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: controller.nomeController,
-                    hintText: "Nome",
-                    icon: Icons.person,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "Campo obrigatorio";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.01,
-                  ),
-                  CustomTextField(
-                    controller: controller.emailController,
-                    hintText: "Email",
-                    icon: Icons.email,
-                    validator: (value) {
-                      if (!value.isEmpty && !GetUtils.isEmail(value)) {
-                        return "Email Inválido";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.02,
-                  ),
-                  MaterialButton(
-                    minWidth: Get.width * 0.85,
-                    height: Get.height * 0.06,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      'Editar',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                    onPressed: () {
-                      //controller.save();
-                    },
-                    color: primaryColor,
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.005,
-                  ),
-                  InkWell(
-                    child: Text(
-                      'Alterar senha',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                    onTap: () {
-                      showSenhaChanger();
-                    },
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.01,
-                  ),
-                ],
-              ),
-            ),*/
             Row(
               children: [
                 Padding(

@@ -72,6 +72,7 @@ class LoginPage extends StatelessWidget {
                           ]),
                       child: TextFormField(
                         cursorColor: Colors.black,
+                        keyboardType: TextInputType.emailAddress,
                         controller: _loginController.emailTextController,
                         validator: (value) {
                           if (value.isEmpty) {

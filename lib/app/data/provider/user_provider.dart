@@ -6,13 +6,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:meus_filmes/app/data/model/profile_model.dart';
 import 'package:meus_filmes/app/data/model/user_model.dart';
 import 'package:meus_filmes/app/data/provider/dataBase_provider.dart';
-import 'package:meus_filmes/app/data/provider/profile_provider.dart';
 import 'package:meus_filmes/app/global/constants.dart';
 import 'package:meus_filmes/app/routes/app_pages.dart';
 
 class UserProvider {
   final databaseProvider = DataBaseProvider.db;
-  final ProfileProvider _profileProvider = ProfileProvider();
+
   final data = GetStorage();
 
   Future<User> login(String email, String passwd) async {
@@ -32,7 +31,8 @@ class UserProvider {
 
       if (result.length > 0) {
         user = User.fromMap(result.first);
-        _saveSession(user);
+        data.write("userId", user.id);
+        data.write("user", user.toMap());
         return user;
       } else
         return null;
@@ -42,11 +42,55 @@ class UserProvider {
     }
   }
 
-  void _saveSession(User user) async {
-    Profile profile = await _profileProvider.getFirstUserProfile(user.id);
-    data.write("userId", user.id);
-    data.write("profileId", profile.id);
-    data.write("user", user.toMap());
+  Future<int> changePassword(
+      {int idUser, String oldPassword, String newPassword}) async {
+    final db = await databaseProvider.database;
+
+    try {
+      var result = await db.query(USER_TABLE,
+          columns: [USER_ID],
+          where: '$USER_ID = ? and $USER_PASSWORD = ?',
+          whereArgs: [
+            idUser,
+            sha1.convert(utf8.encode(oldPassword)).toString(),
+          ]);
+
+      if (result.length > 0) {
+        //senha corresponde
+
+        int updateCount = await db.update(USER_TABLE,
+            {USER_PASSWORD: sha1.convert(utf8.encode(newPassword)).toString()},
+            where: '$USER_ID = ?', whereArgs: [idUser]);
+
+        return updateCount;
+      } else
+        return 0; //senha nao coincide
+    } catch (e) {
+      print(e.toString());
+      return -1; //erro
+    }
+  }
+
+  Future<int> updateUser(int idUser, {String email, String nome}) async {
+    final db = await databaseProvider.database;
+
+    try {
+      //senha corresponde
+
+      int updateCount = await db.update(
+          USER_TABLE,
+          {
+            USER_EMAIL: email.trim(),
+            USER_NAME: nome.trim(),
+          },
+          where: '$USER_ID = ?',
+          whereArgs: [idUser]);
+
+      return updateCount;
+    } catch (e) {
+      print(e.toString());
+      return -1; //erro
+    }
   }
 
   void _clearSession() {

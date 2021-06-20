@@ -9,12 +9,14 @@ class CustomTextField extends StatelessWidget {
   final IconData icon;
   final String hintText;
   final bool obscureText;
+  final TextInputType keyboardType;
 
   const CustomTextField(
       {this.controller,
       this.hintText,
       this.icon,
       this.toggle,
+      this.keyboardType,
       this.validator,
       this.obscureText});
 
@@ -25,10 +27,11 @@ class CustomTextField extends StatelessWidget {
       height: 45,
       padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(35)),
+          color: Colors.white60,
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
       child: TextFormField(
+        keyboardType: keyboardType,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         cursorColor: Colors.black,
         controller: controller,
@@ -49,7 +52,7 @@ class CustomTextField extends StatelessWidget {
                 : null,
             icon: Icon(
               icon,
-              color: primaryColor,
+              color: primaryColor.withOpacity(0.6),
             ),
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.black)),

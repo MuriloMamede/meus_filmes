@@ -7,14 +7,15 @@ const kBaseUrl = 'https://api.themoviedb.org/3';
 const imageUrl = 'https://image.tmdb.org/t/p/original/';
 const imgNotFound = 'https://i.imgur.com/cb5sTfZ.png';
 
-showSnackBar(String title, String message) => Get.snackbar(
-      title,
-      message,
-      backgroundGradient: LinearGradient(colors: [Colors.black, Colors.black]),
-      backgroundColor: Colors.black54,
-      snackPosition: SnackPosition.BOTTOM,
-      margin: const EdgeInsets.all(15),
-    );
+showSnackBar(String title, String message) => Get.snackbar(title, message,
+    backgroundGradient: LinearGradient(colors: [Colors.black, Colors.black]),
+    backgroundColor: Colors.black54,
+    snackPosition: SnackPosition.BOTTOM,
+    margin: const EdgeInsets.all(15),
+    dismissDirection: SnackDismissDirection.HORIZONTAL,
+    isDismissible: true,
+    duration: Duration(milliseconds: 1500),
+    animationDuration: Duration(milliseconds: 400));
 
 const String MYMOVIES_TABLE = 'myMovies';
 const String MYMOVIES_ID = 'id';

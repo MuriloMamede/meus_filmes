@@ -60,14 +60,18 @@ class ProfileProvider {
   }
 
   Future<int> editProfile(Profile profile) async {
+    print(profile.name);
     final db = await databaseProvider.database;
     int updateCount = await db.update(
         PROFILE_TABLE,
         {
           PROFILE_NAME: profile.name,
+          PROFILE_ID: profile.id,
+          PROFILE_USER_ID: profile.userId,
         },
         where: '$PROFILE_ID = ?',
         whereArgs: [profile.id]);
+
     return updateCount;
   }
 }

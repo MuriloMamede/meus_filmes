@@ -43,12 +43,13 @@ class MyMoviesProvider {
         whereArgs: [idProfile]);
 
     List<Movie> itemList = List<Movie>();
+    if (itens != null) {
+      itens.forEach((currentItem) {
+        Movie item = Movie.fromDBMap(currentItem);
 
-    itens.forEach((currentItem) {
-      Movie item = Movie.fromDBMap(currentItem);
-
-      itemList.add(item);
-    });
+        itemList.add(item);
+      });
+    }
 
     return itemList;
   }
