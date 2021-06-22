@@ -98,6 +98,7 @@ class SignUpPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     CustomTextField(
+                      keyboardType: TextInputType.name,
                       controller: _loginController.nameTextController,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -112,6 +113,7 @@ class SignUpPage extends StatelessWidget {
                       height: Get.height * 0.02,
                     ),
                     CustomTextField(
+                      keyboardType: TextInputType.emailAddress,
                       controller: _loginController.emailTextController,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -128,6 +130,7 @@ class SignUpPage extends StatelessWidget {
                       height: Get.height * 0.02,
                     ),
                     Obx(() => CustomTextField(
+                          keyboardType: TextInputType.visiblePassword,
                           controller: _loginController.passwordTextController,
                           validator: (value) {
                             if (value.isEmpty) {
@@ -149,6 +152,7 @@ class SignUpPage extends StatelessWidget {
                       height: Get.height * 0.02,
                     ),
                     Obx(() => CustomTextField(
+                          keyboardType: TextInputType.visiblePassword,
                           validator: (String value) {
                             if (value.isEmpty) {
                               return "Campo obrigatorio";

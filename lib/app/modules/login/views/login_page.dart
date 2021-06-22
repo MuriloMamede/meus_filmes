@@ -78,7 +78,12 @@ class LoginPage extends StatelessWidget {
                       height: Get.height * 0.03,
                     ),
                     Obx(() => CustomTextField(
-                          keyboardType: TextInputType.emailAddress,
+                          onEditingComplete: () {
+                            if (_formKey.currentState.validate()) {
+                              _loginController.login();
+                            }
+                          },
+                          keyboardType: TextInputType.visiblePassword,
                           controller: _loginController.passwordTextController,
                           validator: (value) {
                             return null;
@@ -123,14 +128,14 @@ class LoginPage extends StatelessWidget {
                         height: Get.height * 0.055,
                         width: Get.width / 1.2,
                         decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Colors.white,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Cadastrar'.toUpperCase(),
                             style: TextStyle(
-                                color: Colors.white,
+                                color: primaryColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
