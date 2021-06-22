@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meus_filmes/app/theme/colors.dart';
 
 class CustomListTile extends StatelessWidget {
   final String imageUrl;

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
+
 import 'package:meus_filmes/app/data/model/profile_model.dart';
 import 'package:meus_filmes/app/data/model/user_model.dart';
 import 'package:meus_filmes/app/data/provider/profile_provider.dart';
@@ -24,18 +26,32 @@ class OptionsController extends GetxController {
   TextEditingController senhaAtualController = TextEditingController();
   TextEditingController senhaNovaController = TextEditingController();
   CustomPopupMenuController controllerMenu = CustomPopupMenuController();
+  File image;
   var isSenhaVisible = false.obs;
   var isSenhanovaVisible = false.obs;
-
+  var imagePicked = "".obs;
   @override
   void onInit() async {
     super.onInit();
     setController();
   }
 
+  setImage(pickedFile) async {
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+      imagePicked.value = pickedFile.path;
+      await _userProvider.changeImagePath(user.id, pickedFile.path);
+      updateUserSaved();
+    } else {
+      print('No image selected.');
+    }
+  }
+
   setController() {
     emailController.text = user.email;
     nomeController.text = user.name;
+    image = File(user.fotoPath);
+    imagePicked(user.fotoPath);
   }
 
   changePassword() async {
@@ -48,14 +64,23 @@ class OptionsController extends GetxController {
       Get.back();
       showSnackBar("Sucesso", "Senha alterada com sucesso!");
     } else if (response == 0) {
-      Get.back();
       showSnackBar("Ops..", "Senha atual incorreta");
+      return;
     } else {
       Get.back();
       showSnackBar("Ops..", "Ocorreu um erro");
     }
     senhaNovaController.clear();
     senhaAtualController.clear();
+  }
+
+  updateUserSaved() {
+    User userNovo = User.fromMap(user.toMap());
+
+    userNovo.email = emailController.text.trim();
+    userNovo.name = nomeController.text.trim();
+    userNovo.fotoPath = imagePicked.value;
+    data.write("user", userNovo.toMap());
   }
 
   updateUser() async {
@@ -66,8 +91,7 @@ class OptionsController extends GetxController {
     );
     if (response == 1) {
       Get.back();
-      user.name = nomeController.text.trim();
-      user.email = emailController.text.trim();
+      updateUserSaved();
       showSnackBar("Sucesso", "Informações alteradas com sucesso!");
     } else {
       Get.back();

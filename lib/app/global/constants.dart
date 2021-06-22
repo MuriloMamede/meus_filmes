@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meus_filmes/app/theme/colors.dart';
 
 const kApiKey = 'd7ce90bea6eb17de7e4fe1e792261e84';
 const kBaseUrl = 'https://api.themoviedb.org/3';
@@ -23,14 +22,14 @@ const String MYMOVIES_TITLE = 'title';
 const String MYMOVIES_POSTERPATH = 'posterPath';
 const String MYMOVIES_ISWATCHED = 'isWatched';
 const String MYMOVIES_ID_PROFILE = 'idProfile';
-const String MYMOVIES_GENRES_ID = 'genresid';
+const String MYMOVIES_GENRES_ID = 'genresId';
 
 const String USER_TABLE = 'user';
 const String USER_ID = 'idUser';
 const String USER_EMAIL = 'email';
 const String USER_NAME = 'name';
 const String USER_PASSWORD = 'password';
-const String USER_BIRTHDATE = 'birthDate';
+const String USER_FOTO_PATH = 'fotoPath';
 
 const String PROFILE_TABLE = 'profile';
 const String PROFILE_ID = 'idProfile';

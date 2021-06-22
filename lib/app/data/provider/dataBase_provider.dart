@@ -45,7 +45,7 @@ class DataBaseProvider {
           "$USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
           "$USER_NAME TEXT,"
           "$USER_EMAIL INTEGER,"
-          "$USER_BIRTHDATE INTEGER,"
+          "$USER_FOTO_PATH TEXT,"
           "$USER_PASSWORD TEXT"
           ")");
 

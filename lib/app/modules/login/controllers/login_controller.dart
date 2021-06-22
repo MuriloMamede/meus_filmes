@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,17 +16,32 @@ class LoginController extends GetxController {
   final ProfileProvider _profileProvider = ProfileProvider();
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController passwordTextController = TextEditingController();
-  final TextEditingController password2TextController = TextEditingController();
   final TextEditingController nameTextController = TextEditingController();
+  var senhaIsVisible = false.obs;
+  var senhaConfirmIsVisible = false.obs;
+  var senhaCadastroIsVisible = false.obs;
+
   final data = GetStorage();
   var dateS = ''.obs;
   DateTime date = DateTime.now();
+  var imagePicked = "".obs;
+  File image;
+  setImage(pickedFile) async {
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+      imagePicked.value = pickedFile.path;
+      // await _userProvider.changeImagePath(user.id, pickedFile.path);
+      //updateUserSaved();
+    } else {
+      print('No image selected.');
+    }
+  }
 
   void register() async {
     User user = await _userProvider.signUp(User(
-        birthDate: date,
         email: emailTextController.text,
         password: passwordTextController.text,
+        fotoPath: imagePicked.value,
         name: nameTextController.text));
 
     if (user != null) {

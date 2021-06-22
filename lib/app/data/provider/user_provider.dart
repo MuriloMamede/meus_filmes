@@ -23,8 +23,8 @@ class UserProvider {
             USER_EMAIL,
             USER_PASSWORD,
             USER_NAME,
-            USER_BIRTHDATE,
-            USER_ID
+            USER_ID,
+            USER_FOTO_PATH
           ],
           where: '$USER_PASSWORD = ? and $USER_EMAIL = ?',
           whereArgs: [sha1.convert(utf8.encode(passwd)).toString(), email]);
@@ -39,6 +39,24 @@ class UserProvider {
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future<int> changeImagePath(int idUser, String newPath) async {
+    final db = await databaseProvider.database;
+    try {
+      int updateCount = await db.update(
+          USER_TABLE,
+          {
+            USER_FOTO_PATH: newPath,
+          },
+          where: '$USER_ID = ?',
+          whereArgs: [idUser]);
+
+      return updateCount;
+    } catch (e) {
+      print(e.toString());
+      return -1; //erro
     }
   }
 

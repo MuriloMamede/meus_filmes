@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:meus_filmes/app/global/widgets/CustomTextField.dart';
 import 'package:meus_filmes/app/global/widgets/customAppBar.dart';
 import 'package:meus_filmes/app/modules/login/controllers/login_controller.dart';
 import 'package:meus_filmes/app/routes/app_pages.dart';
@@ -56,74 +57,39 @@ class LoginPage extends StatelessWidget {
               Container(
                 height: Get.height / 2,
                 width: Get.width,
-                padding: EdgeInsets.only(top: 62),
+                padding: EdgeInsets.only(top: 62, left: 28, right: 28),
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      width: Get.width / 1.2,
-                      height: 45,
-                      padding: EdgeInsets.only(
-                          top: 4, left: 16, right: 16, bottom: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 5)
-                          ]),
-                      child: TextFormField(
-                        cursorColor: Colors.black,
-                        keyboardType: TextInputType.emailAddress,
-                        controller: _loginController.emailTextController,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Campo obrigatorio";
-                          } else if (!GetUtils.isEmail(value)) {
-                            return "Email Inválido";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.email,
-                              color: Get.theme.primaryColor,
-                            ),
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.black)),
-                      ),
+                    CustomTextField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _loginController.emailTextController,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Campo obrigatorio";
+                        } else if (!GetUtils.isEmail(value)) {
+                          return "Email Inválido";
+                        }
+                        return null;
+                      },
+                      hintText: 'Email',
+                      icon: Icons.email,
                     ),
-                    Container(
-                      width: Get.width / 1.2,
-                      height: 45,
-                      margin: EdgeInsets.only(top: 32),
-                      padding: EdgeInsets.only(
-                          top: 4, left: 16, right: 16, bottom: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 5)
-                          ]),
-                      child: TextFormField(
-                        controller: _loginController.passwordTextController,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Campo obrigatorio";
-                          }
-                          return null;
-                        },
-                        cursorColor: Colors.black,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.vpn_key,
-                              color: Get.theme.primaryColor,
-                            ),
-                            hintText: 'Senha',
-                            hintStyle: TextStyle(color: Colors.black)),
-                      ),
+                    SizedBox(
+                      height: Get.height * 0.03,
                     ),
+                    Obx(() => CustomTextField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _loginController.passwordTextController,
+                          validator: (value) {
+                            return null;
+                          },
+                          toggle: () {
+                            _loginController.senhaIsVisible.toggle();
+                          },
+                          obscureText: !_loginController.senhaIsVisible.value,
+                          hintText: 'Senha',
+                          icon: Icons.vpn_key,
+                        )),
                     Spacer(),
                     InkWell(
                       onTap: () {

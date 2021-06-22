@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meus_filmes/app/global/constants.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:meus_filmes/app/global/widgets/CustomTextField.dart';
+import 'package:meus_filmes/app/global/widgets/ImageSelector.dart';
 import 'package:meus_filmes/app/global/widgets/customAppBar.dart';
 import 'package:meus_filmes/app/global/widgets/customBottomAppBar.dart';
 import 'package:meus_filmes/app/modules/options/controllers/options_controller.dart';
@@ -12,34 +14,35 @@ import 'package:meus_filmes/app/modules/options/views/itemMenu.dart';
 import 'package:meus_filmes/app/theme/colors.dart';
 
 class OptionsView extends GetView<OptionsController> {
+  final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
+    void showImageSelector() {
+      imageSelector(context, cameraTap: () async {
+        Get.back();
+        final pickedFile = await picker.getImage(source: ImageSource.camera);
+        controller.setImage(pickedFile);
+      }, galeriaTap: () async {
+        Get.back();
+        final pickedFile = await picker.getImage(source: ImageSource.gallery);
+        controller.setImage(pickedFile);
+      });
+    }
+
     void showProfileAdder(int index) {
       controller.profileNomeController.text =
           controller.profilesList[index].name;
       Get.defaultDialog(
         backgroundColor: Colors.black87,
-        content: Container(
-          margin: EdgeInsets.only(top: 20),
-          padding: EdgeInsets.only(left: 8),
-          decoration: BoxDecoration(
-              color: Colors.white60,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: TextField(
-            controller: controller.profileNomeController,
-            autofocus: true,
-            cursorColor: Colors.white,
-            onEditingComplete: () {
-              controller.editProfile(index);
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Nome',
-            ),
-            style: TextStyle(color: Colors.black87, fontSize: 18),
-          ),
+        content: CustomTextField(
+          controller: controller.profileNomeController,
+          hintText: 'Nome',
+          onEditingComplete: () {
+            controller.editProfile(index);
+          },
         ),
-        title: 'Editar',
+        title: 'Editar Nome',
         titleStyle: TextStyle(
           color: Colors.white,
         ),
@@ -188,7 +191,7 @@ class OptionsView extends GetView<OptionsController> {
         ),
         actions: [
           InkWell(
-            onTap: controller.updateUser(),
+            onTap: controller.updateUser,
             child: Container(
               height: 45,
               width: Get.width / 1.2,
@@ -263,6 +266,14 @@ class OptionsView extends GetView<OptionsController> {
                                       showUserChanger();
                                     },
                                   ),
+                                  ItemMenu(
+                                    title: 'Trocar Foto',
+                                    icon: Icons.image,
+                                    onTap: () {
+                                      controller.controllerMenu.hideMenu();
+                                      showImageSelector();
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -275,32 +286,34 @@ class OptionsView extends GetView<OptionsController> {
                       IconButton(
                         icon: Icon(Icons.logout),
                         onPressed: () {
-                          controller.logOut();
+                          Get.defaultDialog(
+                            backgroundColor: Colors.white10,
+                            title: 'Deseja mesmo sair?',
+                            titleStyle: TextStyle(color: Colors.white),
+                            onCancel: () {},
+                            textConfirm: 'Sim',
+                            textCancel: 'Não',
+                            confirmTextColor: Colors.white,
+                            onConfirm: () => controller.logOut(),
+                            middleText: "",
+                            // middleTextStyle: TextStyle(color: Colors.white),
+                          );
                         },
                       ),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: Get.height * 0.15,
-                      width: Get.height * 0.15,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
+                  Obx(() {
+                    return controller.imagePicked.value != ""
+                        ? Align(
+                            alignment: Alignment.center,
+                            child: Image.file(
+                              controller.image,
+                              width: Get.height * 0.2,
+                              height: Get.height * 0.2,
                               fit: BoxFit.cover,
-                              image: NetworkImage(imgNotFound))),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Icon(
-                            Icons.add_photo_alternate,
-                            color: primaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                            ))
+                        : CircularProgressIndicator();
+                  }),
                 ],
               ),
             ),
